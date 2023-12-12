@@ -9,6 +9,15 @@ class HomePageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        search_by = self.request.GET.get('search_by')
+        query = self.request.GET.get('query')
+        if search_by in ['phone', 'name'] and query:
+            if search_by == 'phone':
+                persones = models.Persone.objects.filter(name=query)
+            else:
+                persones = models.Persone.objects.filter(phones__phone=query)
+            context["persones"] = persones
+            return context
         context["persones"] = models.Persone.objects.all()
         return context
 
