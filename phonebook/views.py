@@ -4,6 +4,7 @@ from django.urls import reverse_lazy
 import phonebook
 from . import models
 
+
 class HomePageView(TemplateView):
     template_name = 'phonebook/home.html'
 
@@ -11,13 +12,18 @@ class HomePageView(TemplateView):
         context = super().get_context_data(**kwargs)
         search_by = self.request.GET.get('search_by')
         query = self.request.GET.get('query')
+        search_message = 'All phones'
         if search_by in ['phone', 'name'] and query:
-            if search_by == 'phone':
+            if search_by == 'name':
+                search_message = f'Searching for "name" by {query}'
                 persones = models.Persone.objects.filter(name=query)
             else:
                 persones = models.Persone.objects.filter(phones__phone=query)
+                search_message = f'Searching for "phone" by {query}'
+            context['search_message'] = search_message
             context["persones"] = persones
             return context
+        context['search_message'] = search_message
         context["persones"] = models.Persone.objects.all()
         return context
 
