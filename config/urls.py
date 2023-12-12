@@ -6,4 +6,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.HomePageView.as_view(), name='home'),
     path('add/', views.AddPhoneFormView.as_view()),
+    path('delete/<int:pk>', views.DeletePhoneView.as_view(), name='delete'),
 ]

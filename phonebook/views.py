@@ -1,4 +1,4 @@
-from django.views.generic import TemplateView, CreateView
+from django.views.generic import TemplateView, CreateView, DeleteView
 from . import forms
 from django.urls import reverse_lazy
 import phonebook
@@ -6,6 +6,11 @@ from . import models
 
 class HomePageView(TemplateView):
     template_name = 'phonebook/home.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["persones"] = models.Persone.objects.all()
+        return context
 
 
 class AddPhoneFormView(CreateView):
@@ -18,3 +23,9 @@ class AddPhoneFormView(CreateView):
         for phone_number in phone_numbers.split('\n'):
             models.Phone.objects.create(phone=phone_number, contact=self.object)
         return super().get_success_url()
+    
+
+class DeletePhoneView(DeleteView):
+    model = models.Persone
+    template_name = 'phonebook/delete_persone.html'
+    success_url = reverse_lazy('home')
