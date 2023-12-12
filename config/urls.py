@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from phonebook import views
 
 urlpatterns = [
@@ -7,4 +7,5 @@ urlpatterns = [
     path('', views.HomePageView.as_view(), name='home'),
     path('add/', views.AddPhoneFormView.as_view()),
     path('delete/<int:pk>', views.DeletePhoneView.as_view(), name='delete'),
+    path('api-auth/', include('rest_framework.urls'))
 ]
