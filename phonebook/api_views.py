@@ -4,6 +4,7 @@ from . import models
 from . import serializers
 from rest_framework.response import Response
 from rest_framework import generics
+from rest_framework import viewsets
 
 
 @csrf_exempt
@@ -31,5 +32,15 @@ class PersonDetailAPIView(generics.RetrieveAPIView):
 
 
 class PersoneUpdateAPIView(generics.UpdateAPIView):
+    queryset = models.Persone.objects.all()
+    serializer_class = serializers.PersoneSerializers
+
+
+class PersoneDeleteAPIView(generics.DestroyAPIView):
+    queryset = models.Persone.objects.all()
+    serializer_class = serializers.PersoneSerializers
+
+
+class PersoneModelViewSet(viewsets.ModelViewSet):
     queryset = models.Persone.objects.all()
     serializer_class = serializers.PersoneSerializers
