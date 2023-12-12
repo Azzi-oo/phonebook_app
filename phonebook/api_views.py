@@ -2,6 +2,9 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from . import models
 from . import serializers
+from rest_framework.response import Response
+from rest_framework import generics
+
 
 @csrf_exempt
 def persone_list(request):
@@ -15,3 +18,18 @@ def persone_list(request):
         if serializers.is_valid():
             serializers.save()
             return JsonResponse(serializers.data, status=201)
+
+
+class PersoneListAPIView(generics.ListAPIView):
+    queryset = models.Persone.objects.all()
+    serializer_class = serializers.PersoneSerializers
+
+
+class PersonDetailAPIView(generics.RetrieveAPIView):
+    queryset = models.Persone.objects.all()
+    serializer_class = serializers.PersoneSerializers
+
+
+class PersoneUpdateAPIView(generics.UpdateAPIView):
+    queryset = models.Persone.objects.all()
+    serializer_class = serializers.PersoneSerializers
